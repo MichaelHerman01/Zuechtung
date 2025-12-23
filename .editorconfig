@@ -1,0 +1,4 @@
+﻿[*.cs]
+
+# CS8608: Die NULL-Zulässigkeit von Verweistypen im Typ entspricht nicht dem außer Kraft gesetzten Member.
+dotnet_diagnostic.CS8608.severity = none
