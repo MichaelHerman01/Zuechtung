@@ -123,10 +123,11 @@ namespace Model
                 this.SmartlinkModel.Smartlink1?.Stop();
                 this.SmartlinkModel.Smartlink2?.Stop();
                 this.SmartlinkModel.Smartlink3?.Stop();
-                while (this.SmartlinkModel.Smartlink1.IsRunning
-                    && this.SmartlinkModel.Smartlink2.IsRunning
-                    && this.SmartlinkModel.Smartlink3.IsRunning
-                    && this.isLoopRunning)
+                while (
+                       (this.SmartlinkModel.Smartlink1?.IsRunning ?? false)
+                    || (this.SmartlinkModel.Smartlink2?.IsRunning ?? false)
+                    || (this.SmartlinkModel.Smartlink3?.IsRunning ?? false)
+                    || this.isLoopRunning)
                 {
                     Thread.Sleep(1000);
                 }

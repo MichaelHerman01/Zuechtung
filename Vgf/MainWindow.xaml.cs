@@ -17,10 +17,14 @@ namespace Vgf
     {
         public MainWindow()
         {
-            InitializeComponent();
-            Global.SetApplicationVersion(Assembly.GetExecutingAssembly().GetName().Version);
-            this.Title = Global.ApplicationTitle;
-            this.DataContext = new MainViewModel();
+            try {
+                InitializeComponent();
+                Global.SetApplicationVersion(Assembly.GetExecutingAssembly().GetName().Version);
+                this.Title = Global.ApplicationTitle;
+                this.DataContext = new MainViewModel();
+            } catch(Exception exception) {
+                Global.UserMsg(exception);
+            }
         }
     }
 }
