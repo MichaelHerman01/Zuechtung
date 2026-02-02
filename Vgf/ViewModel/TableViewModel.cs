@@ -35,8 +35,8 @@ namespace Vgf
             this.ReglerZonenViewModel = reglerZonenViewModel;
             this.ControlViewModel = controlViewModel;
             this.ConfigViewModel = configViewModel;
-            this.ControlValuesGrafikViewModel = new ControlValuesGrafikViewModel(this.MainModel, controlValuesGraphData);
-            this.CurrentValuesGrafikViewModel = new CurrentValuesGrafikViewModel(this.MainModel, currentTemperaturesGraphData);
+            this.ControlValuesGrafikViewModel = new ValuesGrafikViewModel(this.MainModel, controlValuesGraphData, "Temperaturführung in °C");
+            this.CurrentValuesGrafikViewModel = new ValuesGrafikViewModel(this.MainModel, currentTemperaturesGraphData, "Ist Temperaturen in °C");
             this.SingleValuesGrafikViewModel = new SingleValuesGrafikViewModel(
                 this.MainModel,
                 currentTemperaturesGraphData,
@@ -62,9 +62,9 @@ namespace Vgf
         
         public AdamViewModel? AdamViewModel { get; }
 
-        public ControlValuesGrafikViewModel ControlValuesGrafikViewModel { get; }
+        public ValuesGrafikViewModel ControlValuesGrafikViewModel { get; }
 
-        public CurrentValuesGrafikViewModel CurrentValuesGrafikViewModel { get; }
+        public ValuesGrafikViewModel CurrentValuesGrafikViewModel { get; }
 
         public SingleValuesGrafikViewModel SingleValuesGrafikViewModel { get; }
 
