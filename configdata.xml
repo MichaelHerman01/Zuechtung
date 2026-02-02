@@ -3,13 +3,14 @@
 	<Base>
 		<MaxTemperatureGradientKelvinPerHour>80</MaxTemperatureGradientKelvinPerHour>
 		<MinTemperatureCheckGradient>50</MinTemperatureCheckGradient>
-    <PreventWindowsSleepDuringRun>true</PreventWindowsSleepDuringRun>
-    <PreventDisplayOffDuringRun>true</PreventDisplayOffDuringRun>
+		<PreventWindowsSleepDuringRun>true</PreventWindowsSleepDuringRun>
+		<PreventDisplayOffDuringRun>true</PreventDisplayOffDuringRun>
 		<LastControlValuesFileName1>C:\Users\Michael Hermann\Documents\Projects\Zuechtung\eineMInute.xml</LastControlValuesFileName1>
 		<LastControlValuesFileName2>C:\Projects\Zucht\Vgf\vorheizen50_955.xml</LastControlValuesFileName2>
 		<LastControlValuesFileName3>C:\Users\Michael Hermann\Documents\Projects\Zuechtung\Vorlagepraktikum _2018.xml</LastControlValuesFileName3>
 		<LastControlValuesFileName4>C:\Users\Michael Hermann\Documents\Projects\Zuechtung\Sprung800Schneller.xml</LastControlValuesFileName4>
 		<LogTemperaturePowerPath>C:\Projects\Zucht\Vgf\TemperaturPowerLog</LogTemperaturePowerPath>
+		<GraphRefreshInterval>5</GraphRefreshInterval>
 	</Base>
 	<Spmartlink>
 		<Smartlink1Exist>0</Smartlink1Exist>
@@ -223,7 +224,7 @@
 		</FilterCoeffSetpointGradient>
 	</Pid>
 	<Zone>
-		<AlarmTemperature>
+    <AlarmTemperature>
 			<Zone1>600.0</Zone1>
 			<Zone2>1200.0</Zone2>
 			<Zone3>1255.0</Zone3>
