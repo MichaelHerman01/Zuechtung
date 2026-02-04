@@ -232,9 +232,10 @@ namespace Vgf.ViewModel
                 if (val.Length != this.dataCollections.Length)
                     throw new Exception("Invalid Logfile loaded");
 
-                currentCycle++;
                 for (int i = 0; i < val.Length; i++)
                     this.dataCollections[i].Add(new DataPoint(currentCycle, (double)val[i]));
+
+                currentCycle++;
             }
             this.InvokeOnDataChanged();
         }
@@ -254,8 +255,9 @@ namespace Vgf.ViewModel
                     if (val.Length >= index)
                         throw new Exception("Invalid Logfile loaded");
 
-                    currentCycle++;
                     this.dataCollections[i].Add(new DataPoint(currentCycle, (double)val[index]));
+
+                    currentCycle++;
                 }
             }
             this.InvokeOnDataChanged();
