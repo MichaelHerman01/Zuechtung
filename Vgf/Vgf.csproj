@@ -12,7 +12,7 @@
     <RunAnalyzersDuringLiveAnalysis>False</RunAnalyzersDuringLiveAnalysis>
     <EnableNETAnalyzers>False</EnableNETAnalyzers>
 	<Company>IB Hermann</Company>
-	<Copyright>Copyright © 2024-2025</Copyright>
+	<Copyright>Copyright © 2024-2026</Copyright>
 	<AssemblyVersion>1.1.0.3</AssemblyVersion>
 	<FileVersion>1.0.0.3</FileVersion>
 	<Version>1.0.0.3</Version>
