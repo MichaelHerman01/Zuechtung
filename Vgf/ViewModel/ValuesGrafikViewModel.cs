@@ -12,6 +12,7 @@ namespace Vgf.ViewModel
     using OxyPlot.Axes;
     using OxyPlot.Legends;
     using OxyPlot;
+    using System.Runtime.CompilerServices;
 
     /// <summary>
     /// Defines the values grafik view model.
@@ -28,12 +29,14 @@ namespace Vgf.ViewModel
         protected LineSeries lineSeriesZone6;
         protected LineSeries lineSeriesZone7;
         protected MainModel mainModel;
+        protected GraphDataSource graphDataSource;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ValuesGrafikViewModel"/> class.
         /// </summary>
-        public ValuesGrafikViewModel(MainModel mainModel, string headline)
+        public ValuesGrafikViewModel(MainModel mainModel, GraphDataSource graphDataSource, string headline)
         {
+            this.graphDataSource = graphDataSource;
             this.mainModel = mainModel;
             this.mainModel.Channels.ControlStateChanged += this.OnChannelsControlStateChanged;
             this.Channels = this.mainModel.Channels;
@@ -55,13 +58,13 @@ namespace Vgf.ViewModel
             this.xAxis = new LinearAxis { Position = AxisPosition.Bottom };
             this.PlotViewModel.Axes.Add(this.yAxis);
             this.PlotViewModel.Axes.Add(this.xAxis);
-            this.lineSeriesZone1 = new LineSeries() { Title = "Z1", Color = OxyColors.Red};
-            this.lineSeriesZone2 = new LineSeries() { Title = "Z2", Color = OxyColors.Brown };
-            this.lineSeriesZone3 = new LineSeries() { Title = "Z3", Color = OxyColors.DarkViolet };
-            this.lineSeriesZone4 = new LineSeries() { Title = "Z4", Color = OxyColors.Turquoise };
-            this.lineSeriesZone5 = new LineSeries() { Title = "Z5", Color = OxyColors.Green };
-            this.lineSeriesZone6 = new LineSeries() { Title = "Z6", Color = OxyColors.Blue };
-            this.lineSeriesZone7 = new LineSeries() { Title = "Z7", Color = OxyColors.Black };
+            this.lineSeriesZone1 = new LineSeries() { ItemsSource = graphDataSource.dataCollections[0], Title = "Z1", Color = OxyColors.Red };
+            this.lineSeriesZone2 = new LineSeries() { ItemsSource = graphDataSource.dataCollections[1], Title = "Z2", Color = OxyColors.Brown };
+            this.lineSeriesZone3 = new LineSeries() { ItemsSource = graphDataSource.dataCollections[2], Title = "Z3", Color = OxyColors.DarkViolet };
+            this.lineSeriesZone4 = new LineSeries() { ItemsSource = graphDataSource.dataCollections[3], Title = "Z4", Color = OxyColors.Turquoise };
+            this.lineSeriesZone5 = new LineSeries() { ItemsSource = graphDataSource.dataCollections[4], Title = "Z5", Color = OxyColors.Green };
+            this.lineSeriesZone6 = new LineSeries() { ItemsSource = graphDataSource.dataCollections[5], Title = "Z6", Color = OxyColors.Blue };
+            this.lineSeriesZone7 = new LineSeries() { ItemsSource = graphDataSource.dataCollections[6], Title = "Z7", Color = OxyColors.Black };
             this.PlotViewModel.Series.Add(this.lineSeriesZone1);
             this.PlotViewModel.Series.Add(this.lineSeriesZone2);
             this.PlotViewModel.Series.Add(this.lineSeriesZone3);
@@ -76,6 +79,9 @@ namespace Vgf.ViewModel
             this.IsShowZone5 = true;
             this.IsShowZone6 = true;
             this.IsShowZone7 = true;
+
+            this.graphDataSource.OnDataChanged += () => this.PlotViewModel.InvalidatePlot(true);
+
             this.NextPlotCommand = new RelayCommand(() => this.NextPlotCommandOccured?.Invoke(this, EventArgs.Empty), (o) => this.mainModel.Channels.ControlState == ControlStates.Stop, Global.UserMsg);
             this.PreviusPlotCommand = new RelayCommand(() => this.PreviousCommandOccured?.Invoke(this, EventArgs.Empty), (o) => this.mainModel.Channels.ControlState == ControlStates.Stop, Global.UserMsg);
             this.AutoZoomCommand = new RelayCommand(this.AutoZoom, (o) => true, Global.UserMsg);
@@ -100,7 +106,7 @@ namespace Vgf.ViewModel
             {
                 this.Set(value);
                 this.lineSeriesZone1.IsVisible = value;
-                this.PlotViewModel.InvalidatePlot(true);
+                this.PlotViewModel.InvalidatePlot(false);
             }
         }
 
@@ -111,7 +117,7 @@ namespace Vgf.ViewModel
             {
                 this.Set(value);
                 this.lineSeriesZone2.IsVisible = value;
-                this.PlotViewModel.InvalidatePlot(true);
+                this.PlotViewModel.InvalidatePlot(false);
             }
         }
 
@@ -122,7 +128,7 @@ namespace Vgf.ViewModel
             {
                 this.Set(value);
                 this.lineSeriesZone3.IsVisible = value;
-                this.PlotViewModel.InvalidatePlot(true);
+                this.PlotViewModel.InvalidatePlot(false);
             }
         }
 
@@ -133,7 +139,7 @@ namespace Vgf.ViewModel
             {
                 this.Set(value);
                 this.lineSeriesZone4.IsVisible = value;
-                this.PlotViewModel.InvalidatePlot(true);
+                this.PlotViewModel.InvalidatePlot(false);
             }
         }
 
@@ -144,7 +150,7 @@ namespace Vgf.ViewModel
             {
                 this.Set(value);
                 this.lineSeriesZone5.IsVisible = value;
-                this.PlotViewModel.InvalidatePlot(true);
+                this.PlotViewModel.InvalidatePlot(false);
             }
         }
 
@@ -155,7 +161,7 @@ namespace Vgf.ViewModel
             {
                 this.Set(value);
                 this.lineSeriesZone6.IsVisible = value;
-                this.PlotViewModel.InvalidatePlot(true);
+                this.PlotViewModel.InvalidatePlot(false);
             }
         }
 
@@ -166,51 +172,15 @@ namespace Vgf.ViewModel
             {
                 this.Set(value);
                 this.lineSeriesZone7.IsVisible = value;
-                this.PlotViewModel.InvalidatePlot(true);
+                this.PlotViewModel.InvalidatePlot(false);
             }
         }
 
-        public RelayCommand NextPlotCommand {  get; }
+        public RelayCommand NextPlotCommand { get; }
         public RelayCommand PreviusPlotCommand { get; }
         public RelayCommand AutoZoomCommand { get; }
 
-        public void ShowLogdata(int valueRow)
-        {
-            this.yAxis.Minimum = double.NaN;
-            this.yAxis.Maximum = double.NaN;
-            this.xAxis.Minimum = double.NaN;
-            this.xAxis.Maximum = double.NaN;
-            int currentCycle = 0;
-            this.lineSeriesZone1.Points.Clear();
-            this.lineSeriesZone2.Points.Clear();
-            this.lineSeriesZone3.Points.Clear();
-            this.lineSeriesZone4.Points.Clear();
-            this.lineSeriesZone5.Points.Clear();
-            this.lineSeriesZone6.Points.Clear();
-            this.lineSeriesZone7.Points.Clear();
-            this.PlotViewModel.InvalidatePlot(true);
-            List<Tuple<double, double, double, double, double, double, double>> values = this.mainModel.Sampler.GetValueTable(valueRow);
-            foreach (Tuple<double, double, double, double, double, double, double> val in values)
-            {
-                currentCycle++;
-                this.lineSeriesZone1.Points.Add(new DataPoint(currentCycle, val.Item1));
-                this.lineSeriesZone2.Points.Add(new DataPoint(currentCycle, val.Item2));
-                this.lineSeriesZone3.Points.Add(new DataPoint(currentCycle, val.Item3));
-                this.lineSeriesZone4.Points.Add(new DataPoint(currentCycle, val.Item4));
-                this.lineSeriesZone5.Points.Add(new DataPoint(currentCycle, val.Item5));
-                this.lineSeriesZone6.Points.Add(new DataPoint(currentCycle, val.Item6));
-                this.lineSeriesZone7.Points.Add(new DataPoint(currentCycle, val.Item7));
-            }
-            this.IsShowZone1 = true;
-            this.IsShowZone2 = true;
-            this.IsShowZone3 = true;
-            this.IsShowZone4 = true;
-            this.IsShowZone5 = true;
-            this.IsShowZone6 = true;
-            this.IsShowZone7 = true;
-        }
-
-        private void AutoZoom()
+        public void AutoZoom()
         {
             this.yAxis.Minimum = double.NaN;
             this.yAxis.Maximum = double.NaN;
@@ -225,6 +195,72 @@ namespace Vgf.ViewModel
         {
             BaseViewModel.RequeryCommands();
         }
+    }
 
+    public class GraphDataSource
+    {
+        public List<DataPoint>[] dataCollections;
+
+        public event Action OnDataChanged = delegate { };
+
+        public void InvokeOnDataChanged() => this.OnDataChanged();
+
+        public GraphDataSource(int count = 7)
+        {
+            List<List<DataPoint>> list = new(count);
+            for (int i = 0; i < count; i++)
+                list.Add(new());
+            this.dataCollections = list.ToArray();
+        }
+
+        public void Clear()
+        {
+            foreach (var collection in dataCollections)
+                collection.Clear();
+            this.InvokeOnDataChanged();
+        }
+
+        public void LoadLogData(int valueRow, MainModel mainModel)
+        {
+            this.Clear();
+
+            var values = mainModel.Sampler.GetValueTable(valueRow);
+
+            int currentCycle = 0;
+            foreach (ITuple val in values)
+            {
+                if (val.Length != this.dataCollections.Length)
+                    throw new Exception("Invalid Logfile loaded");
+
+                for (int i = 0; i < val.Length; i++)
+                    this.dataCollections[i].Add(new DataPoint(currentCycle, (double)val[i]));
+
+                currentCycle++;
+            }
+            this.InvokeOnDataChanged();
+        }
+
+        public void LoadLogDataForZones(int index, MainModel mainModel)
+        {
+            this.Clear();
+
+            // TODO: Eventuell das Logfile nur einmal zentral parsen?
+            for (int i = 0; i < this.dataCollections.Length; i++)
+            {
+                var values = mainModel.Sampler.GetAllValuesFromZone(i);
+
+                int currentCycle = 0;
+                foreach (ITuple val in values)
+                {
+                    if (val.Length >= index)
+                        throw new Exception("Invalid Logfile loaded");
+
+                    this.dataCollections[i].Add(new DataPoint(currentCycle, (double)val[index]));
+
+                    currentCycle++;
+                }
+            }
+            this.InvokeOnDataChanged();
+        }
     }
 }
